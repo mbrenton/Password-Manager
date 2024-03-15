@@ -1,54 +1,57 @@
 # Password Manager in python
 
-import json, hashlib, getpass, os, pyperclip, sys, string, random
+import json, hashlib, getpass, os, pyperclip, sys, string, random, secrets
 from cryptography.fernet import Fernet
 
 # Generate new passwords
 def random_password():
-    length = int(input("Enter password length: "))
- 
-    print('''Choose character set for password from these : 
-            1. Digits
-            2. Letters
-            3. Special characters
-            4. Exit''')
-    
+
+    # Password length
+    print("")
+    length = int(input("[-] Enter password length: "))
+    x = True
     characterList = ""
-    
-    # Getting character set for password
-    while(True):
-        choice = int(input("Pick a number "))
-        if(choice == 1):
-            
+    password = []
+
+    #Options for generating password
+    print("[-] Password Options")
+    print("[-] 1. Letters")
+    print("[-] 2. Digits")
+    print("[-] 3. Special Characters")
+    print("[-] Type ur options all on same line.")
+
+    while(x == True):
+        choice = int(input("Options: "))
+
+        if('1' in str(choice)):
             # Adding letters to possible characters
             characterList += string.ascii_letters
-        elif(choice == 2):
+            print("[-] Adding letters to possible characters")
+            x = False
+        if('2' in str(choice)):
             
             # Adding digits to possible characters
             characterList += string.digits
-        elif(choice == 3):
+            print("[-] Adding digits to possible characters")
+            x = False
+        if('3' in str(choice)):
             
-            # Adding special characters to possible
-            # characters
+            # Adding special characters to possible characters
             characterList += string.punctuation
-        elif(choice == 4):
-            break
+            print("[-] Adding special characters to possible characters")
+            x = False
         else:
-            print("Please pick a valid option!")
-    
-    password = []
+            print("ERROR: Please pick a valid option!")
     
     for i in range(length):
-    
-        # Picking a random character from our 
-        # character list
-        randomchar = random.choice(characterList)
-        
-        # appending a random character to password
-        password.append(randomchar)
-    
+        password = ''
+        for i in range(length):
+            password += ''.join(secrets.choice(characterList))
+
     # printing password as a string
     print("The random password is " + "".join(password))
+
+    return password
 
 # Password strength checker
 def password_strength_checker(password):
@@ -242,6 +245,7 @@ def main():
         print("3. Generate a random password")
         print("4. Test a passwords strength")
         print("5. Quit password manager")
+        print("")
         
         choice = input("Enter your choice: ")
 
@@ -298,7 +302,7 @@ def main():
                     break
 
         elif choice == '3':  # If a user wants to generate a random password
-            random_password()
+            password = random_password()
 
         elif choice == '4':  # If a user wants to check the strength of a single password
             password = getpass.getpass("Enter password: ")
