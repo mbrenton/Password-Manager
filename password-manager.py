@@ -18,6 +18,7 @@ def random_password():
     print("[-] 1. Letters")
     print("[-] 2. Digits")
     print("[-] 3. Special Characters")
+    print("[-] 4. All options")
     print("[-] Type ur options all on same line.")
 
     while(x == True):
@@ -26,19 +27,27 @@ def random_password():
         if('1' in str(choice)):
             # Adding letters to possible characters
             characterList += string.ascii_letters
-            print("[-] Adding letters to possible characters")
+            print("[-] Added letters to possible characters")
             x = False
         if('2' in str(choice)):
             
             # Adding digits to possible characters
             characterList += string.digits
-            print("[-] Adding digits to possible characters")
+            print("[-] Added digits to possible characters")
             x = False
         if('3' in str(choice)):
             
             # Adding special characters to possible characters
             characterList += string.punctuation
-            print("[-] Adding special characters to possible characters")
+            print("[-] Added special characters to possible characters")
+            x = False
+        if('4' in str(choice)):
+            
+            # Adding special characters to possible characters
+            characterList += string.punctuation
+            characterList += string.ascii_letters
+            characterList += string.digits
+            print("[-] Added all characters to possible characters")
             x = False
         else:
             print("ERROR: Please pick a valid option!")
@@ -278,8 +287,27 @@ def main():
                 password_choice = input("Enter your choice: ")
                 if password_choice == '1':  # If a user wants to add a password
                     website = input("Enter website: ")
-                    password = getpass.getpass("Enter password: ")
+                    print("Do you want to generate a secure password or choose your own.")
+                    print("1. Generate new password automatically")
+                    print("2. Choose your own")
 
+                    x = True
+
+                    while (x == True):
+
+                        choice = input("Choice: ")
+
+                        if (choice == "1"):
+                            password = random_password()
+                            x = False
+
+                        elif (choice == "2"):
+                            password = getpass.getpass("Enter password: ")
+                            x = False
+
+                        else:
+                            print("ERROR: Please pick either 1 or 2")
+                    
                     # Encrypt and add the password
                     add_password(website, password)
                     print("\n[+] Password added!\n")
