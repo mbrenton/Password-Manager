@@ -8,38 +8,38 @@ def random_password():
 
     # Password length
     print("")
-    length = int(input("[-] Enter password length: "))
+    length = int(input("[*] Enter password length: "))
     x = True
     characterList = ""
     password = []
 
     #Options for generating password
-    print("[-] Password Options")
-    print("[-] 1. Letters")
-    print("[-] 2. Digits")
-    print("[-] 3. Special Characters")
-    print("[-] 4. All options")
-    print("[-] Type ur options all on same line.")
+    print("[*] Password Options")
+    print("[*] 1. Letters")
+    print("[*] 2. Digits")
+    print("[*] 3. Special Characters")
+    print("[*] 4. All options")
+    print("[*] Type ur options all on same line.")
 
     while(x == True):
-        choice = int(input("Options: "))
+        choice = int(input("[*] Option(s): "))
 
         if('1' in str(choice)):
             # Adding letters to possible characters
             characterList += string.ascii_letters
-            print("[-] Added letters to possible characters")
+            print("[+] Added letters to possible characters")
             x = False
         if('2' in str(choice)):
             
             # Adding digits to possible characters
             characterList += string.digits
-            print("[-] Added digits to possible characters")
+            print("[+] Added digits to possible characters")
             x = False
         if('3' in str(choice)):
             
             # Adding special characters to possible characters
             characterList += string.punctuation
-            print("[-] Added special characters to possible characters")
+            print("[+] Added special characters to possible characters")
             x = False
         if('4' in str(choice)):
             
@@ -47,10 +47,10 @@ def random_password():
             characterList += string.punctuation
             characterList += string.ascii_letters
             characterList += string.digits
-            print("[-] Added all characters to possible characters")
+            print("[+] Added all characters to possible characters")
             x = False
         else:
-            print("ERROR: Please pick a valid option!")
+            print("[-] ERROR: Please pick a valid option!")
     
     for i in range(length):
         password = ''
@@ -58,7 +58,8 @@ def random_password():
             password += ''.join(secrets.choice(characterList))
 
     # printing password as a string
-    print("The random password is " + "".join(password))
+    print("[+] The random password is " + "".join(password))
+    password_strength_checker(password)
 
     return password
 
@@ -85,7 +86,7 @@ def password_strength_checker(password):
             specialChar = True
 
     # Strength of password  
-    print("Strength of password:-", end = "") 
+    print("[*] Password Strength: ", end = "") 
     if (hasLower and hasUpper and 
         hasDigit and specialChar and n >= 8): 
         print("Strong") 
@@ -95,7 +96,6 @@ def password_strength_checker(password):
         print("Moderate") 
     else: 
         print("Weak") 
-
 
 # Hashing the Master Password
 def hash_password(password):
@@ -129,12 +129,11 @@ def register(username, master_password):
     if os.path.exists(file_name) and os.path.getsize(file_name) == 0:
         with open(file_name, 'w') as file:
             json.dump(user_data, file)
-            print("\n[+] Registration complete!!\n")
+            print("\n[+] Registration complete!!")
     else:
         with open(file_name, 'x') as file:
             json.dump(user_data, file)
-            print("\n[+] Registration complete!!\n")
-
+            print("\n[+] Registration complete!!")
 
 # Log user in 
 def login(username, entered_password):
@@ -155,19 +154,17 @@ def login(username, entered_password):
         print("\n[-] You have not registered. Please do that.\n")
         sys.exit()
 
-
 # View saved websites
 def view_websites():
     try:
         with open('passwords.json', 'r') as data:
             view = json.load(data)
-            print("\nWebsites you saved...\n")
+            print("\n[*]Websites you saved...\n")
             for x in view:
                 print(x['website'])
             print('\n')
     except FileNotFoundError:
         print("\n[-] You have not saved any passwords!\n")
-
 
 # Load or generate the encryption key
 key_filename = 'encryption_key.key'
@@ -180,7 +177,6 @@ else:
         key_file.write(key)
 
 cipher = initialize_cipher(key)
-
 
 # Save password
 def add_password(website, password):
@@ -207,7 +203,6 @@ def add_password(website, password):
     # Save the updated list back to passwords.json
     with open('passwords.json', 'w') as file:
         json.dump(data, file, indent=4)
-
 
 # Retrieve a saved password
 def get_password(website):
@@ -249,14 +244,14 @@ def main():
         print("")
         print("-" * 45)
         print("")
-        print("1. Register a new master password")
-        print("2. Login to an existing account")
-        print("3. Generate a random password")
-        print("4. Test a passwords strength")
-        print("5. Quit password manager")
+        print("[*] 1. Register a new master password")
+        print("[*] 2. Login to an existing account")
+        print("[*] 3. Generate a random password")
+        print("[*] 4. Test a passwords strength")
+        print("[*] 5. Quit password manager")
         print("")
         
-        choice = input("Enter your choice: ")
+        choice = input("[*] Enter your choice: ")
 
         if choice == '1':  # If a user wants to register
             file = 'user_data.json'
@@ -264,56 +259,57 @@ def main():
                 print("\n[-] Master user already exists!!")
                 sys.exit()
             else:
-                username = input("Enter your username: ")
-                master_password = getpass.getpass("Enter your master password: ")
+                username = input("[*] Enter your username: ")
+                master_password = getpass.getpass("[*] Enter your master password: ")
                 register(username, master_password)
 
         elif choice == '2':  # If a User wants to log in
             file = 'user_data.json'
             if os.path.exists(file):
-                username = input("Enter your username: ")
-                master_password = getpass.getpass("Enter your master password: ")
+                username = input("[*] Enter your username: ")
+                master_password = getpass.getpass("[*] Enter your master password: ")
                 login(username, master_password)
             else:
                 print("\n[-] You have not registered. Please do that.\n")
                 sys.exit()
             # Various options after a successful Login.
             while True:
-                print("1. Add Password")
-                print("2. Get Password")
-                print("3. View Saved websites")
-                print("4. Quit")
+                print("[*] 1. Add Password")
+                print("[*] 2. Get Password")
+                print("[*] 3. View Saved websites")
+                print("[*] 4. Quit")
 
-                password_choice = input("Enter your choice: ")
+                password_choice = input("[*] Enter your choice: ")
                 if password_choice == '1':  # If a user wants to add a password
-                    website = input("Enter website: ")
-                    print("Do you want to generate a secure password or choose your own.")
-                    print("1. Generate new password automatically")
-                    print("2. Choose your own")
+                    website = input("[*] Enter website: ")
+                    print("[*] Do you want to generate a secure password or choose your own.")
+                    print("[*] 1. Generate new password automatically")
+                    print("[*] 2. Choose your own")
 
                     x = True
 
                     while (x == True):
 
-                        choice = input("Choice: ")
+                        choice = input("[*] Choice: ")
 
                         if (choice == "1"):
                             password = random_password()
                             x = False
 
                         elif (choice == "2"):
-                            password = getpass.getpass("Enter password: ")
+                            password = getpass.getpass("[*] Enter password: ")
+                            password_strength_checker(password)
                             x = False
 
                         else:
-                            print("ERROR: Please pick either 1 or 2")
+                            print("[-] ERROR: Please pick either 1 or 2")
                     
                     # Encrypt and add the password
                     add_password(website, password)
                     print("\n[+] Password added!\n")
 
                 elif password_choice == '2':  # If a User wants to retrieve a password
-                    website = input("Enter website: ")
+                    website = input("[*] Enter website: ")
                     decrypted_password = get_password(website)
                     if website and decrypted_password:
                         # Copy password to clipboard for convenience
@@ -333,7 +329,7 @@ def main():
             password = random_password()
 
         elif choice == '4':  # If a user wants to check the strength of a single password
-            password = getpass.getpass("Enter password: ")
+            password = getpass.getpass("[*] Enter password: ")
             password_strength_checker(password)
 
         elif choice == '5' or choice == 'exit':  # If a user wants to quit the program
