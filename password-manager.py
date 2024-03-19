@@ -1,6 +1,6 @@
 # Password Manager in python
 
-import json, hashlib, getpass, os, pyperclip, sys, string, random, secrets
+import json, hashlib, getpass, os, pyperclip, sys, string, secrets
 from cryptography.fernet import Fernet
 
 # Generate new passwords
@@ -248,7 +248,8 @@ def main():
         print("[*] 2. Login to an existing account")
         print("[*] 3. Generate a random password")
         print("[*] 4. Test a passwords strength")
-        print("[*] 5. Quit password manager")
+        print("[*] 5. Reset Database (keys and passwords)")
+        print("[*] 6. Quit password manager")
         print("")
         
         choice = input("[*] Enter your choice: ")
@@ -332,7 +333,53 @@ def main():
             password = getpass.getpass("[*] Enter password: ")
             password_strength_checker(password)
 
-        elif choice == '5' or choice == 'exit':  # If a user wants to quit the program
+        elif choice == '5':  # If a user wants to clean up
+            print("[*] Are you sure?")
+            print("[*] This will delete old password database, keys, and login info")
+            confirm = input("[*] Confirm choice (y or n): ")
+
+            x = False
+
+            while x == False:
+                if confirm == 'y':
+                    print("[-] Deleting files...")
+
+                    key_file = "encryption_key.key"
+                    # If file exists, delete it.
+                    if os.path.isfile(key_file):
+                        os.remove(key_file)
+                        print("[-] Removed %s" % key_file)
+                    else:
+                        # If it fails, inform the user.
+                        print("[-] Error: %s file not found" % key_file)
+
+                    password_file = "passwords.json"
+                    # If file exists, delete it.
+                    if os.path.isfile(password_file):
+                        os.remove(password_file)
+                        print("[-] Removed %s" % password_file)
+                    else:
+                        # If it fails, inform the user.
+                        print("[-] Error: %s file not found" % password_file)
+
+                    user_data_file = "user_data.json"
+                    # If file exists, delete it.
+                    if os.path.isfile(user_data_file):
+                        os.remove(user_data_file)
+                        print("[-] Removed %s" % user_data_file)
+                    else:
+                        # If it fails, inform the user.
+                        print("[-] Error: %s file not found" % user_data_file)
+
+                    x = True
+                elif confirm == 'n':
+                    print("[*] Canceling...")
+                    x = True
+                else:
+                    print("[-] ERROR: Please pick a valid option! (y or n)")
+
+
+        elif choice == '6' or choice == 'exit':  # If a user wants to quit the program
             break
 
 if __name__ == "__main__":
